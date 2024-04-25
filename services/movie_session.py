@@ -13,17 +13,14 @@ def create_movie_session(
     return MovieSession.objects.create(
         show_time=movie_show_time,
         movie_id=movie_id,
-        cinema_hall_id=cinema_hall_id)
+        cinema_hall_id=cinema_hall_id
+    )
 
 
 def get_movies_sessions(session_date: str = None) -> QuerySet | MovieSession:
     if session_date:
-        year, month, day = session_date.split("-")
-        return MovieSession.objects.filter(
-            show_time__year=year,
-            show_time__month=month,
-            show_time__day=day
-        )
+        session_date = datetime.strptime(session_date, "%Y-%m-%d")
+        return MovieSession.objects.filter(show_time__date=session_date)
     return MovieSession.objects.all()
 
 
